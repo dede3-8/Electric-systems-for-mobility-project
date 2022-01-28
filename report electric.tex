@@ -1,0 +1,653 @@
+\documentclass{article}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,235mm},
+ left=30mm,
+ top=35mm,
+ right=30mm
+ }
+ \usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{imakeidx}
+\usepackage{tabularx}
+\usepackage{float}
+ \usepackage{setspace}
+ \usepackage[official]{eurosym}
+\usepackage[dvipsnames]{xcolor}
+\title{\textbf{Electric systems for mobility project work\\
+\large Feasibility of long journeys with electric cars in Spain}}
+\author{Gorka Ayala, Marco Bennici, Davide Libera}
+\date{}
+\renewcommand*\contentsname{Summary}
+\makeindex
+
+\begin{document}
+
+\setlength{\parindent}{0pt}.
+\begin{titlepage}
+
+\maketitle
+
+\tableofcontents
+\end{titlepage}
+
+\section{Definition of the project}
+\bigskip
+The purpose of the work is to study if Spain is already ready for a standardization of EVs in terms of number of charging stations. We asked ourselves if it is possible to cross a whole nation with an electric car in a reasonable amount of time, so to have the answers to this question we studied a path through all Spain,from \textbf{Bilbao} to \textbf{Cadiz} more or less \textbf{1000km (938km)} with three of the most common electric cars on the market: \textbf{Tesla Model S Plaid, Bmw i3 and Nissan Leaf}. \\
+
+We chose this 3 cars also because of their different price ranges. We didn't stop in the analysis of a single path for each car but we considered the best case scenario, where basically we consume most of the battery before reaching the charging station (so theoretically doing the highest number of km in the less time) and the conservative path (so theoretically not making the most of the battery but having a more safety). To do this calculations we used a \textit{Matlab} algorithm to compute the energy consumed and with \textit{Python} we calculated the time spent to recharge at each station and the cost of the electricity consumed.\\
+
+Once observed which car has the worst performances we decided to study that one in the worst case scenario in order to see if it’s possible to reach the destinations and in a reasonable amount time, in order to make it possible for any potential driver of an EV to choose the model regardless on range. Then to conclude we compared the worst case scenario for our path in Spain with the worst case scenario in Canada to see which country is the most developed in the field of EVs.\\
+
+\section{Description of the context}
+\subsection{Electric vehicles and charging stations in Spain}
+Spain has set a draft target of 100\% new electric passenger car and light commercial vehicle sales by 2040 as part of its draft Law on Climate Change and Energy Transition.
+\begin{figure}[h]
+\centering
+\includegraphics[width=8cm, height=6cm]{spain2}
+\caption{Number of charger respect to the population \cite{horst1}}
+\end{figure}
+\\
+This figure shows the number of chargers per million population, which is a measure of how prevalent infrastructure is regardless of how many electric vehicles have been sold. Areas that are relatively high on this metric, such as the eastern coast of Spain, are primed for faster electric vehicle growth.In general, the south of the country lags the north on infrastructure. However, the entire country is quite low in terms of charging access.\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm, height=6cm]{spain3}
+\caption{Actual distribution of charging stations in Spain \cite{electromaps}}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm, height=8cm]{spain4}
+\caption{Number of charging stations in 2020 per autonomous community \cite{statista}}
+\end{figure}
+\newpage
+
+\bigskip
+\bigskip
+This map shows where more EVs are sold, we can notice that there is a correspondace of where EVs are sold and where charging stations are more diffused, especially in big cities and in the north of the country.
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm, height=6cm]{spain1}
+\caption{Electric vehicle share including BEVs and PHEVs of new passenger car registrations in 2019 \cite{horst1}}
+\end{figure}
+Spain has experienced slow uptake of electric vehicles and related charging infrastructure through 2019, creating an immense challenge for widespread electrification. By the end of 2019, Spain had 46,000 registered electric vehicles representing 0.2\% of the 25 million passenger cars in Spain and 8,000 chargers. To reach a stock of 2.7 million to 3.6 million electric vehicles and 50\% to 70\% of passenger car sales in 2030, 205,000 to 263,000 workplace, public, and fast chargers are needed. This represents an annual growth rate of 33\% to 36\% in vehicle chargers in Spain.
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm, height=6cm]{spain7}
+\caption{EVs diffusion 2012-2019 \cite{iea}}
+\end{figure}
+\newpage
+\subsection{Energy production sector in Spain}
+An important thing to take into account, regarding the environmental sustainability of electric vehicles, is  from which sources does the electricity come from, so in this section we will show some key figures about the energy sector in Spain to find how 'green' it is.
+\begin{figure}[H]
+\centering
+\includegraphics[width=12cm, height=6cm]{spain5}
+\caption{Electricity production by source 1990-2020  \cite{iea}}
+\end{figure}
+As we see there is still nowadays a predominance of non renewable sources, but fortunately the coal use for electricity production is constantly decreasing, we notice from 2000 an increase of renewable energy sources usage, especially wind.
+An important figure that we will use later in this project is the carbon intensity of the power sector, which is a measure of how much grams of CO2 is emitted per Kwh, the actual value of it is \textbf{167.2 g/kWh}. \cite{statista}
+As shown in the next image this value is forecast to drop dramatically in the next decades.\\
+
+\begin{figure}[H]
+{\centering
+\includegraphics[width=10cm, height=6cm]{spain9}
+\caption{Carbon intensity outlook 2020-2050  \cite{statista}}}
+\end{figure}
+(It is important to notice that this value is not fixed, it can change even during the day, because renewables cannot provide a constant flow of energy as they depend on uncontrollable external factors). 
+\newpage
+In the next image we will show how the renewables are distributed nowadays.\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=8cm, height=5cm]{spain6}
+\caption{Renewables sources components \cite{renewables}}
+\end{figure}
+We wanted to go further, to find approximately how many charging stations are powered directly from renewable sources, by analyzing the charging stations we came up with the following estimate:\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=14cm, height=6cm]{spain8}
+\caption{Charging stations electricity sources  \cite{electromaps}}
+\end{figure}
+As we see the majority is still powered by traditional sources, but the contribution of renewables is not neglectable.
+\section{Description of the path}
+\begin{figure}[H]
+\centering
+\includegraphics[width=10cm, height=9cm]{spain10}
+\caption{Representation of the path \cite{OSM}}
+\end{figure}
+This journey takes us across all Spain, from the north to the south, by car it takes approximately 10 hours to cover this distance (excluding the stops).\\
+It is all on highways but definitely not flat, especially in the first half, where we reach heights up to 1100 metres above sea level. To compute the slope we divided the total path into 10 section of equal slope (linearized).
+\begin{figure}[H]
+\centerline{\includegraphics[width=16cm, height=4cm]{spain11}}
+\caption{Elevation profile of the whole path \cite{googleearth}}
+\end{figure}
+\newpage
+\section{Car choice and key data}
+\begin{figure}[h]
+\centering
+\subfloat[Nissan Leaf 2.0 (2018)]{\includegraphics[width=5cm]{spain12}}
+\qquad
+\subfloat[Bmw i3 (2019)]{\includegraphics[width=5cm]{spain13}}
+\qquad
+\subfloat[Tesla Model S Plaid]{\includegraphics[width=5cm]{spain14}}
+\caption{Cars chosen}
+\end{figure}
+In the next table we will report the most important data that we will use to analyze and compare the performances of the 3 cars in the path:
+\\
+
+{\centering
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{1\textwidth} { 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X 
+  | >{\centering\arraybackslash}X | }
+ \hline
+  & Nissan Leaf 2.0 & Bmw i3 (2019) & Tesla Model S Plaid \\
+ \hline
+ Pmax [kW] & 110 & 125 & 772\\
+ \hline
+Battery capacity [kWh] & 40 & 42.2 & 100 \\
+\hline
+Nominal voltage [V] & 350 & 353 & 450 \\
+\hline
+Range [km] & 220 & 260 & 628 \\
+\hline
+ Price [\euro] & 33620 & 40700 & 130970 \\
+ \hline
+\end{tabularx}}
+\newpage
+\subsection{Charging curves}
+Here we will show the charging curves of the 3 cars, to calculate the charging time we linearized these curves into sections in which we supposed constant power. After each graph we report the values obtained by the linearization.
+\begin{figure}[H]
+\centering{
+\includegraphics[width=12cm, height=9cm]{teslapower}
+\caption{Tesla charging curves in speed charging}}
+\end{figure}
+\begin{itemize}
+\item \textcolor{blue}{V2 150kW: 150kW for 0-45\% \& 95kW for 45-100\%}
+\item \textcolor{ForestGreen}{V2 120kW: 120kW for 0-55\% \& 87.5 kW for 55-100\%}
+\end{itemize}
+\begin{figure}[H]
+\centering{
+\includegraphics[width=14cm, height=9cm]{bmwpower}
+\caption{Bmw i3  charging curves in speed charging \cite{fastned}}}
+\end{figure}
+\begin{itemize}
+\color{orange}
+\item 47.5kW for 10-85\% \& 42.5kW for 85-90\% \& 25kW for 90-100\%
+\end{itemize}
+\begin{figure}[H]
+\centering{
+\includegraphics[width=14cm, height=9cm]{nissanpower}
+\caption{Nissan Leaf charging curves in speed charging \cite{insideevs}}}
+\end{figure}
+\begin{itemize}
+\color{orange}
+\item 43.5kW for 10-60\% \& 39.5kW for 60-70\% \& 26.5kW for 70-90\% \& 17.5kW for 90-100\%
+\end{itemize}
+\subsection{Car performances in highway context}
+First we analyzed the performances of the 3 cars in acceleration entering the highway in Bilbao, we considered a stretch of 1.2km and computed the space profile, the speed profile and the energy consumption, these charts are obtained using excel. 
+\begin{figure}[H]
+\centering{
+\subfloat[Space profile]{\includegraphics[width=5cm]{tesla1}}
+\qquad
+\subfloat[Speed profile]{\includegraphics[width=5cm]{tesla2}}
+\qquad
+\subfloat[Energy consumption]{\includegraphics[width=5cm]{tesla3}}
+\qquad
+\subfloat[Total energy consumption]{\includegraphics[width=5cm]{tesla4}}
+\qquad
+\subfloat[Power consumption]{\includegraphics[width=5cm]{tesla5}}
+\caption{Tesla Model S charts}}
+\end{figure}
+{\centering
+\begin{figure}[H]
+\centering
+\subfloat[Space profile]{\includegraphics[width=5cm]{bmw1}}
+\qquad
+\subfloat[Speed profile]{\includegraphics[width=5cm]{bmw2}}
+\qquad
+\subfloat[Energy consumption]{\includegraphics[width=5cm]{bmw3}}
+\qquad
+\subfloat[Total energy consumption]{\includegraphics[width=5cm]{bmw5}}
+\qquad
+\subfloat[Power consumption]{\includegraphics[width=5cm]{bmw4}}
+\caption{Bmw i3 charts}
+\end{figure}}
+\begin{figure}[H]
+\centering{
+\subfloat[Space profile]{\includegraphics[width=5cm]{nissan1}}
+\qquad
+\subfloat[Speed profile]{\includegraphics[width=5cm]{nissan2}}
+\qquad
+\subfloat[Energy consumption]{\includegraphics[width=5cm]{nissan3}}
+\qquad
+\subfloat[Total energy consumption]{\includegraphics[width=5cm]{nissan4}}
+\qquad
+\subfloat[Power consumption]{\includegraphics[width=5cm]{nissan5}}
+\caption{Nissan Leaf charts}}
+\end{figure}
+\newpage
+In the next sections we will discuss the details of the different possible paths to cover the distance between the two cities, from ideal conditions to more realistic ones.\\
+The results are obtained with a Matlab algorithm, that gives us the total energy consumed by the cars between two charging stations and then using a Jupyter notebook written in Python to compute the total time and the total cost, also all the chart ore obtained with the same notebook. 
+We found The main informations about the charging stations (Power, cost of energy and their location) on the website \textit{www.electromaps.com}. The maps were obtained using the \textit{folium} library in Python.\\
+
+\textbf{Detailed description of Matlab algorithm}\\
+
+This algorithm takes the following inputs: \textit{the speed, the acceleration, the slope profiles} of the trip and the data of the cars \textit{(mass, rolling and air resistance coefficients, etc…)}, with all this data it outputs the maximum power needed and the energy used in every instant as well as the total one for the section you are calculating. The total energy is divided into \textit{rolling, aerodynamical, grade and inertial}, basically we calculate the total energy by taking into account each force the car has to overcome.\\
+Apart from that, it also takes into account the regenerative braking of the cars and the efficiencies.\\
+The speed and acceleration profile we used are: first  accelerate to $120\:km/h$ and then stay at that speed for 10 minutes;  after that, we decelerate to $100\:km/h$ at an acceleration of $\frac{1}{3.6}\:m/s^2$, this is made in order to decelerate one $km/h$ every second, so it takes 20 seconds to decelerate from $120\:km/h$ to $100\:km/h$. We stay at $100\:km/h$ for other 10 minutes, and then we accelerate to $120\:km/h$ at the same rate we have decelerated. This is done like that in order to simulate Spain’s highway limits, which change a lot between $120\:km/h$ and $100\:km/h$.\\
+
+The algorithm practically works like this:\\
+\begin{itemize}
+\item initialize all the data;\\
+\item calculate all the forces, for every second;\\
+\item calculate the power;\\
+\item integrate the power to get the energy consumed;\\
+\item if \textit{inertial forces \textgreater 0}: use traction efficiency;\\
+\item if \textit{inertial forces \textless 0}: use braking efficiency.\\
+\end{itemize}
+\newpage
+\section{Study of the best case scenario}
+In this section we will analyze the best paths theoretically possibile, considering the best weather scenario, no traffic and other factor that can contribute in reducing the range of our cars. We will compute the most important features that characterize the journey: time and cost. To compute the total cost of the price we considered also the money spent to recharge completely the vehicle at home, we found this value to be 0.210 euros per kWh.  \cite{petrolprice}\\
+The formulas used are:
+\begin{equation}
+Total\:recharging\:time:\; t=\sum_{i=1}^{n}\frac{E_{i}}{P_{i}} 
+\end{equation}
+\begin{equation}
+Total\:cost\:for\:the\:trip:\; C=\sum_{i=1}^{n}E_{i}c_{i} + E_{tot}c_{h}
+\end{equation}
+{\centering
+Where $E_{i}$ is the energy recharged at each station,\\
+$P_{i}$ the power available at each station,\\
+$E_{tot}$ the total battery capacity,\\
+$c_{h}$ the cost of energy at home.\\}
+~\\
+Here in this map are shown the charging stations that we need to complete the whole journey with the 3 different cars, notice that the lightgreen lightning indicates the charging stations powered directly by renewable sources.\\
+
+\begin{figure}[H]
+\centering{
+\includegraphics[width=11cm, height=9cm]{spain15}}
+\end{figure}
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.4\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+\color{red} Red & Tesla\\
+\hline
+\color{CadetBlue} Cadetblue & Nissan\\
+ \hline
+\color{Cyan} Lightblue & Bmw \\
+\hline
+\end{tabularx}
+\captionof{table}{Distribution of the charging stations along the path}}}
+\color{black}
+\subsection{Tesla Model S}
+With our top notch car we can cover, ideally, the whole path with a single stop at the Tesla supercharger of Almaraz, we arrive there with 3.7\% of the battery left, so it is a bit risky.
+\\
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 1\\
+\hline
+Total recharging time & 57 mins\\
+ \hline
+Total cost of energy & \euro 28.87\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 49.87\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of optimal path for Tesla}}}
+\subsection{Bmw i3}
+Our second best car needs more stops to reach Cadiz, but in this case we reach every charging station with at least 15\% battery left so we can stay more calm, and even in case of some traffic jams we can safely reach our destination.
+\\	
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 4\\
+\hline
+Total recharging time at each station & 46-40-39-35 mins\\
+\hline
+Total recharging time & 160 mins or 2 hours and 40 mins\\
+ \hline
+Total cost of energy & \euro 40.39\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 49.25\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of optimal path for Bmw}}}
+\subsection{Nissan Leaf}
+Finally, our cheapest car has, as expected, the worst perfomance, but, at least in this conditions, can complete the whole journey without many worries as the battery never goes below 9\%. Interestingly this journey is also the cheapest, both because this car requires less energy to be recharged and also because we stop in more economical stations. 
+\\
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 4\\
+\hline
+Total recharging time at each station & 65-52-51-54 mins\\
+\hline
+Total recharging time & 224 mins or 3 hours and 42 mins\\
+ \hline
+Total cost of energy & \euro 34.12\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 42.52\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of optimal path for Nissan}}}
+\newpage
+\section{Study of the conservative scenario}
+This second scenario includes practically doable paths, to decide where to stop we used the website: \textit{www.evnavigation.com}. In this scenario we never go below 10\% of battery level, also an important thing to notice about this path is that we never recharge the battery to 100\% in the charging stations, but only to 90\% to minimize the time spent (this was also suggested by the website).
+\begin{figure}[H]
+\centering
+\includegraphics[width=11cm, height=9cm]{spain16}
+\end{figure}
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.4\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+\color{red} Red & Tesla\\
+\hline
+\color{CadetBlue} Cadetblue & Nissan\\
+ \hline
+\color{Cyan} Lightblue & Bmw\\
+\hline
+\end{tabularx}
+\captionof{table}{Distribution of the charging stations along the path (the last 3 stations are the same for the Nissan and the Bmw)}}}
+\color{black}
+\subsection{Tesla Model S}
+In this case our top range car needs more than one stop, as expected, one in a supercharger with 150kW of available power and the other in a one with 120kW of power.
+\\
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 2\\
+\hline
+Total recharging time at each station & 33-42 mins\\
+\hline
+Total recharging time & 75 mins or a hour and 15 mins\\
+ \hline
+Total cost of energy & \euro 20.66\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 40.6\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of conservative path for Tesla}}}~\\
+The cost in this case is incredibly low, because the first charging stations provides free charge (for the moment at least), if it had the same prices as the second one the cost would be \euro 36.60, so for a total of \euro 56.30.
+
+\subsection{Bmw i3}
+With this car we start to notice that we need several stops to cover the whole 940km journey, however the time needed at every stop is not very much and similar to the optimal case.\\
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 7\\
+\hline
+Total recharging time at each station & 40-37-38-30-39-39-37 mins\\
+\hline
+Total recharging time & 260 mins or 4 hours and 20 mins\\
+ \hline
+Total cost of energy & \euro 63.67\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 72.53\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of conservative path for Bmw}}}
+
+
+\subsection{Nissan Leaf}
+With our cheapest car we notice a great increase in charging times, for this type of car the difference with an internal combustion engine becomes pretty obvious on a such long journey. In contrast the price remains quite low and also lower that with the Bmw.\\
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 7\\
+\hline
+Total recharging time at each station & 49-49-45-37-47-46-51 mins\\
+\hline
+Total recharging time & 324 mins or 5 hours and 24 mins\\
+ \hline
+Total cost of energy & \euro 61.08\\
+\hline
+Total cost considering the cost to charge the car at home & \euro 69.48\\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of conservative path for Nissan}}}
+\newpage
+\section{Comparison with Internal combustion engine cars}
+In this section we will compare the paths described before with the same route travelled with internal combustion engine cars.In particular we we will compare the total cost of the journey and the total C02 emitted, we have chosen 3 cars with prices similar to our 3 cars and if possible of the same brand.\\
+The ice cars chosen are:
+\begin{itemize}
+\item Nissan Juke
+\item Bmw Series One
+\item Porsche 911 Carrera
+\end{itemize}
+\subsection{Total cost of the journey}
+Comparing the cost is quite easy: for the electric cars we used the values obtained before, for the “traditional” cars we used the average fuel consumptions multiplied by the total distance and then we added to that the cost to fill the car before the departure.\\
+In formulas:
+\begin{equation}
+C=\bar{c}*d*c_{fuel} + c_{fuel}*V_{tot}
+\end{equation}
+Where $c_{fuel}$=1.36\euro/l for diesel and 1.48\euro/l for unleaded petrol. \\
+Results:
+\begin{figure}[H]
+{\centering
+\includegraphics[width=14cm, height=6cm]{Spain17}
+\caption{}}
+\end{figure}
+\newpage
+\subsection{Total C02 emitted}
+Calculating the total carbon dioxide emissions is more complicated, mostly because it is difficult to estimate the emissions related to electric vehicles.
+For the ICE cars we simply multiplied the average CO2 emitted per km by the total distance. 
+For electric cars we used the values exposed in section 2.2, so considering 45.4\% of energy obtained by renewable energy sources, so with no C02 emitted (at least directly) and 54.6\% from traditional sources, so with the carbon intensity value of 167.2 g/kWh. Then we multiplied this value by the total energy consumed.\\
+In formulas:
+\begin{equation}
+C02_{ice}= \bar{em}*d
+\end{equation}
+\begin{equation}
+C02_{evs}=C_{int}*E_{cons}
+\end{equation}
+Results:
+\begin{figure}[H]
+{\centering
+\includegraphics[width=14cm, height=6cm]{Spain18}
+\caption{}}
+\end{figure}
+\newpage
+\section{Study of the worst case scenario}
+In this section we consider the worst case scenario with the car with the worst performances: Nissan Leaf in our case. Through this analysis we wanted to point out if it’s doable to cross the whole nation in a ‘reasonable’ amount of time with an electric car that the majority of people can afford even in bad conditions.\\
+For this scenario this case we considered:
+\begin{itemize}
+\item departing with 50\% of battery capacity;
+\item cold weather;
+\end{itemize}
+\subsection{Outlook on weather influences}
+Computing how much does the external temperature affects the range of an electric car is not an easy task , fortunately we found an interesting article \cite{bulgaria}  that helped us a lot.
+In particular we made use of this curve:
+\begin{figure}[H]
+{\centering
+\includegraphics[width=14cm, height=6cm]{Spain19}
+\caption{}}
+\end{figure}
+Which is described by this equation:
+\begin{equation}
+E= 8.10^{-9}t^{6}-3.10^{-6}t^{5}+0.0001t^{4}+0.0028t^{3}-0.0546t^{2}-2.7979t+206.22
+\end{equation}
+This expertimental curve was obtained by a Canadian company in 2015 on the basis of over 7000 travels in north America.\cite{canada}
+This curve easily shows the strong dependence of energy consumption on external temperature, the optimal conditions are at nearly 20$^{\circ}$C and both extreme cold and extreme heat have negative effects. In addition to that cold temperatures affect the charging speed, because the charging current should be reduce to prevent damages and also some electricity is used to heat the battery.\\
+In our worst case scenario, to make it more realistic we considered different temperatures along the route, and by applying the formula (6) we obtained the specific energy consumption in the different cases, once obtained we divided it by optimal value (at 20 $^{\circ}$C) to obtain the percentage increment. We then used this factor to increase the energy consumed between each stop, which we found with the \textit{Matlab} algorithm.
+\begin{itemize}
+\item \textbf{-4$^{\circ}$C} from Bilbao to Salamanca, \textbf{+37\%} from the optimal consumption.
+\item \textbf{0$^{\circ}$C} from Salamanca to Caceres, \textbf{+31\%} from the optimal consumption.
+\item \textbf{5$^{\circ}$C} from Caceres to Sevilla, \textbf{+21\%} from the optimal consumption.
+\item \textbf{10$^{\circ}$C} from Sevilla to Cadiz, \textbf{+11\%} from the optimal consumption.
+\end{itemize}
+\subsection{Analysis of the path}
+In this map we can see the charging stations in which we will stop in this scenario, they are all 50kW fast charging stations expect one that has a max power of 22kW, here in lightblue.
+\begin{figure}[H]
+{\centering
+\includegraphics[width=12cm, height=9cm]{spain20}
+\caption{Map of the charging stations needed in this scenario}}
+\end{figure}
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 7\\
+\hline
+Total recharging time at each station & 66-51-55-50-44-86-55 mins\\
+\hline
+Total recharging time & 407 mins or 6 hours and 47 mins\\
+ \hline
+Total cost of energy & 65.07\euro  \\
+\hline
+Total cost considering the cost to charge the car at home & 69.27\euro  \\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of worst case scenario in Spain}}}
+Even though the number of stops is the same as the conservative scenario this time the journey takes nearly one hour and half more than in the conservative scenario, but the it can still be completed in a single day.  The cost is instead practically the same, also because at home we charged only to 50\% so we have spent less there.
+
+
+
+
+
+\newpage
+\section{Comparison of the worst case scenario with a similar case in Canada}
+To conclude our analysis we decided to compare the worst case scenario in Spain with a route of similar lenght in Canada, from London (Ontario) to Quèbec city. In this case we consider even worse weather conditions, as winter temperatures in this area go well below freezing. We want to see which of the two countries has a more advanced and more diffused electric vehicles charging infrastructure.
+\begin{figure}[H]
+{\centering
+\includegraphics[width=14cm, height=9cm]{canada2}
+\caption{Map of the route in Canada \cite{OSM}}}
+\end{figure}
+We used the same curve as before to calculate the specific energy consumption and the consequent range of the car:
+\begin{itemize}
+\item \textbf{-2$^{\circ}$C} from London to Toronto, \textbf{+44\%} from the optimal consumption.
+\item \textbf{-10$^{\circ}$C} from Toronto to Quèbec city, \textbf{+34 \%} from the optimal consumption.
+\end{itemize}
+Here are represented the charging stations needed to cover this route in this scenario, as we see we need 10 stops, quite a lot, and three more than the worst case in Spain, but this does not come as a surprise if we notice that at -10$^{\circ}$C the range is nearly half of the optimal.\\
+In this map the Cadet blue stations offer a maximum recharging power of 100kW, while the Lightblue ones of 50kW (but in all cases we recharge our car at 50kW).
+\begin{figure}[H]
+{\centering
+\includegraphics[width=14cm, height=9cm]{canada1}
+\caption{Map of the charging stations needed in this scenario}}
+\end{figure}
+
+{\centering{
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\begin{tabularx}{0.8\textwidth} { 
+ | >{\centering\arraybackslash}X  
+ | >{\centering\arraybackslash}X | }
+\hline
+Number of Stops & 10\\
+\hline
+Total recharging time at each station &  51-50-38-57-35-40-42-34-47-42 mins\\
+\hline
+Total recharging time & 436 mins or 7 hours and 16 mins\\
+ \hline
+Total cost of energy & 107\$ or 73.90\euro  \\
+\hline
+Total cost considering the cost to charge the car at home & 109\$  or 75.41\euro \\
+\hline
+\end{tabularx}
+\captionof{table}{Key figures of worst case scenario in Canada}}}
+\newpage
+\subsection{Graphical comparison}
+To have a better comprehension of the result here we present some charts.
+\begin{figure}[H]
+\centering{
+\subfloat[]{\includegraphics[width=8cm]{canada3}}
+\qquad
+\subfloat[]{\includegraphics[width=9cm]{canada4}}
+\qquad
+\subfloat[]{\includegraphics[width=7.5cm]{canada5}}
+\caption{Graphical comparison}}
+\end{figure}
+As expected the car has worse performance in Canada, primarly because of the colder weather, but as we see it is still possible to complete the journey, even with a relatively cheap car and in winter. 
+If we focus on the emissions we see that Canada clearly wins, even though only one station is powered directly by renewable energy, this because the Carbon intensity of canadian energy sector is very low: $42\:g/kWh$ in Ontario and and even lower $27\:g/kWh$ in Quebec \cite{canada} (in our calculations we considered the average value of the two).
+\section{Conclusions}
+
+From the data we have gathered, we have seen that it is possible to do these kind of trips in Spain, but the number of charging stations is not ideal yet, because there are few fast chargers across the country, and the majority of them are tesla superchargers or 50kW chargers, so we can not charge at the maximum recharging power. Because of these reasons, the trip with the BMW I3 and the Nissan leaf are possible, but not realistic in the sense that a person shouldn't be focused on driving for more than 12-14 hours a day, even if they rest every couple of hours when they need to recharge. As we have seen before, in the worst case scenario and in the conservative one, the Nissan Leaf takes from13 hours up to 16 hours, which is not ideal for a trip supposed to be done in a day by a single person. As for the BMW, the conservative scenario takes around 13 hours so we think this trip is doable in one day, although we think it’s not ideal and we wouldn’t recommend it to people not used to driving for such long trips.\\
+
+When comparing Canada’s electric charging infrastructure with Spain’s, we can see the following:
+\begin{itemize}
+\item Canada has fewer chargers, which means that you have to prepare beforehand where to recharge the car, and, because in some places the chargers are very far away from each other, in order to arrive at destination you have to recharge the car somewhere you weren’t supposed to in order to not remain with empty battery.
+\item Canada has fewer, but more powerful chargers, and it also has more Tesla superchargers, because of its proximity to the USA. This means that every recharge you do is going to be faster if your car supports such charging speed. 
+\item As we have seen before, the weather is much colder in Canada so this means that more energy is going to be consumed in heating, which means you have to make more stops.
+\item The graphs shown before tell us that the cost of energy and charging times  are higher in Canada, but the CO2 emissions are much lower in Canada, which means less pollutants.
+\end{itemize}
+
+Here are some ideas we have about the situation in Spain:
+\begin{itemize}
+
+\item Spain needs more chargers in order not only to standardize electric mobility in the country, but also to support the future development of electric mobility.
+\item Electric grid should look towards getting “greener” in the next few years, meaning that Spain has a lot of potential in terms of renewable energy sources, and if they invest money on it, they could have a more powerful electric grid.
+\item Having a more powerful grid, Spain could use that power to make better chargers, because as of right now, the majority of chargers are 3 phase, and they are not very powerful.
+\end{itemize}
+
+Finally, we are going to talk about our own opinion about the cars, taking into account all the data we have gathered. We think that the Tesla model S is the ideal car right now to make these kinds of trips, but we also know that it is not available for everyone due to its pricing, we also think that the other two cars are not as we have seen before, so the best choice for these kinds of trips would be a middle ground between the BMW and the Tesla, which could be a Tesla model 3, the Mercedes EQA or the Hyundai kona. These three cars are in the range of 40.000-50.000€. 
+
+\begin{thebibliography}{9}
+\bibitem{horst1}
+Michael Nicholas, Sandra Wappelhorst:
+\textit{Spain’s electric vehicle infrastructure challenge: How many chargers will be required in 2030?}
+\bibitem{electromaps}
+\textit{www.electromaps.com}
+\bibitem{statista}
+I. Wagner on
+\textit{www.statista.com}
+\bibitem{iea}
+\textit{www.iea.org/countries/Spain}
+\bibitem{renewables}
+\textit{Preliminary Report 2015, Red Electrica Espana}
+\bibitem{OSM}
+\textit{www.openstreetmap.org}
+\bibitem{googleearth}
+\textit{www.earth.google.com}
+\bibitem{petrolprice}
+\textit{www.globalpetrolprices.com/Spain/electricity prices}
+\bibitem{insideevs}
+\textit{www.insideevs.com}
+\bibitem{fastned}
+\textit{www.fastned.nl}
+\bibitem{bulgaria}
+Ivan Evtimov, Rosen Ivanov, Milen Sapundjiev:
+\textit{Energy consumption of auxiliary systems of electric cars}
+\bibitem{canada}
+\textit{Real-World Nissan Leaf fleet data reveals,
+http://insideevs.com/real-world-nissan-leaf-fleet-data-reveals}
+\bibitem{canada}
+\textit{www.electricitymap.org}
+\end{thebibliography}
+\end{document}
